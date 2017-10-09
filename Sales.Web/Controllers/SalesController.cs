@@ -38,18 +38,18 @@ namespace Sales.Web.Controllers
                 return HttpNotFound();
             }
 
-            SalesOrderViewModel vm = new SalesOrderViewModel();
-            vm.SalesOrderId = salesOrder.SalesOrderId;
-            vm.CustomerName = salesOrder.CustomerName;
-            vm.PONumber = salesOrder.PONumber;
-            vm.MessageForClient = "Im from VM";
+            SalesOrderViewModel vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
+            vm.MessageToClient = $"Customer has an Id = '{vm.SalesOrderId}'.";
 
             return View(vm);
         }
 
         public ActionResult Create()
         {
-            return View();
+            SalesOrderViewModel vm = new SalesOrderViewModel() { MessageToClient = "You will create a new order!" };
+            vm.ObjectState = ObjectState.Added;
+
+            return View(vm);
         }
 
         public ActionResult Edit(int? id)
@@ -63,10 +63,14 @@ namespace Sales.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(salesOrder);
+
+            SalesOrderViewModel vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
+            vm.MessageToClient = $"Editing Customer with Name = '{vm.CustomerName}' and Id = '{vm.SalesOrderId}'";
+            vm.ObjectState = ObjectState.Unchanged;
+
+            return View(vm);
         }
 
-        // GET: Sales/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -78,8 +82,37 @@ namespace Sales.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(salesOrder);
+
+            SalesOrderViewModel vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
+            vm.MessageToClient = $"Deleting Customer with Name = '{vm.CustomerName}' and Id = '{vm.SalesOrderId}'";
+            vm.ObjectState = ObjectState.Deleted;
+
+            return View(vm);
         }
+
+
+        public JsonResult Save(SalesOrderViewModel vm)
+        {
+            SalesOrder salesOrder = VmHelpers.CreateSalesOrderFromSalesOrderViewModel(vm);
+            salesOrder.ObjectState = vm.ObjectState;
+
+            _salesContext.SalesOrders.Attach(salesOrder);
+            _salesContext.ChangeTracker.Entries<IObjectWithState>().Single().State = Helpers.ConvertState(salesOrder.ObjectState);
+            _salesContext.SaveChanges();
+
+            if (vm.ObjectState == ObjectState.Deleted)
+            {
+                return Json(new { newLocation = "/Sales/Index/" });
+            }
+
+            vm.MessageToClient = VmHelpers.GetMessageToClient(vm.ObjectState, salesOrder.CustomerName, salesOrder.SalesOrderId);
+
+            vm.SalesOrderId = salesOrder.SalesOrderId;
+            vm.ObjectState = ObjectState.Unchanged;
+
+            return Json(new { salesOrderViewModel = vm });
+        }
+
 
         protected override void Dispose(bool disposing)
         {
