@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using Sales.DataLayer;
+﻿using Sales.DataLayer;
 using Sales.Model;
 using Sales.Web.ViewModels;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
 
 namespace Sales.Web.Controllers
 {
@@ -39,7 +34,7 @@ namespace Sales.Web.Controllers
             }
 
             SalesOrderViewModel vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
-            vm.MessageToClient = $"Customer has an Id = '{vm.SalesOrderId}'.";
+            vm.MessageToClient = $"Customer has an Id = '{vm.Id}'.";
 
             return View(vm);
         }
@@ -65,8 +60,7 @@ namespace Sales.Web.Controllers
             }
 
             SalesOrderViewModel vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
-            vm.MessageToClient = $"Editing Customer with Name = '{vm.CustomerName}' and Id = '{vm.SalesOrderId}'";
-            vm.ObjectState = ObjectState.Unchanged;
+            vm.MessageToClient = $"Editing Customer with Name = '{vm.CustomerName}' and Id = '{vm.Id}'";
 
             return View(vm);
         }
@@ -84,20 +78,19 @@ namespace Sales.Web.Controllers
             }
 
             SalesOrderViewModel vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
-            vm.MessageToClient = $"Deleting Customer with Name = '{vm.CustomerName}' and Id = '{vm.SalesOrderId}'";
+            vm.MessageToClient = $"Deleting Customer with Name = '{vm.CustomerName}' and Id = '{vm.Id}'";
             vm.ObjectState = ObjectState.Deleted;
 
             return View(vm);
         }
 
-
+        [HttpPost]
         public JsonResult Save(SalesOrderViewModel vm)
         {
             SalesOrder salesOrder = VmHelpers.CreateSalesOrderFromSalesOrderViewModel(vm);
-            salesOrder.ObjectState = vm.ObjectState;
 
             _salesContext.SalesOrders.Attach(salesOrder);
-            _salesContext.ChangeTracker.Entries<IObjectWithState>().Single().State = Helpers.ConvertState(salesOrder.ObjectState);
+            _salesContext.ApplyStateChanges();// .ChangeTracker.Entries<IObjectWithState>().Single().State = Helpers.ConvertState(salesOrder.ObjectState);
             _salesContext.SaveChanges();
 
             if (vm.ObjectState == ObjectState.Deleted)
@@ -105,10 +98,10 @@ namespace Sales.Web.Controllers
                 return Json(new { newLocation = "/Sales/Index/" });
             }
 
-            vm.MessageToClient = VmHelpers.GetMessageToClient(vm.ObjectState, salesOrder.CustomerName, salesOrder.SalesOrderId);
+            var messageToClient = VmHelpers.GetMessageToClient(vm.ObjectState, salesOrder.CustomerName, salesOrder.Id);
 
-            vm.SalesOrderId = salesOrder.SalesOrderId;
-            vm.ObjectState = ObjectState.Unchanged;
+            vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder); //.SalesOrderId = salesOrder.SalesOrderId;
+            vm.MessageToClient = messageToClient;
 
             return Json(new { salesOrderViewModel = vm });
         }

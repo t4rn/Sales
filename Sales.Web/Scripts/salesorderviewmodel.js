@@ -5,11 +5,27 @@
     Deleted: 3
 };
 
+var salesOrderItemMapping = {
+    'SalesOrderItems': {
+        key: function (salesOrderItem) {
+            return ko.utils.unwrapObservable(salesOrderItem.SalesOrderItemId);
+        },
+        create: function (options) {
+            return new SalesOrderItemViewModel(options.data);
+        }
+    }
+};
+
+SalesOrderItemViewModel = function (data) {
+    var self = this;
+    ko.mapping.fromJS(data, salesOrderItemMapping, self);
+};
+
+
 
 SalesOrderViewModel = function (data) {
     var self = this;
-    ko.mapping.fromJS(data, {}, self);
-
+    ko.mapping.fromJS(data, salesOrderItemMapping, self);
 
     self.save = function () {
         $.ajax({
@@ -36,6 +52,12 @@ SalesOrderViewModel = function (data) {
 
         return true;
     };
+
+    self.addSalesOrderItem = function () {
+        var salesOrderItem = new SalesOrderItemViewModel(
+            { SalesOrderItemId: 0, ProductCode: "", Quantity: 1, UnitPrice: 0, ObjectState: ObjectState.Added });
+        self.SalesOrderItems.push(salesOrderItem);
+    }
 
 
 }

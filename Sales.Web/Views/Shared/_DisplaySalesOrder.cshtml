@@ -11,6 +11,21 @@
     </div>
 </div>
 
+<table class="table table-striped">
+    <tr>
+        <th>Product Code</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+    </tr>
+    <tbody data-bind="foreach: SalesOrderItems">
+        <tr>
+            <td class="form-group"><span class="form-control input-sm" data-bind="text: ProductCode" /></td>
+            <td class="form-group"><span class="form-control input-sm" data-bind="text: Quantity" /></td>
+            <td class="form-group"><span class="form-control input-sm" data-bind="text: UnitPrice" /></td>
+        </tr>
+    </tbody>
+</table>
+
 <p>
     <a href="/" class="btn btn-default btn-sm">&laquo; Back to List</a>
 </p>
