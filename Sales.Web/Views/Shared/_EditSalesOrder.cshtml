@@ -1,46 +1,49 @@
 ﻿<h2>@ViewBag.Title</h2>
 <p data-bind="text: MessageToClient"></p>
-<div>
+<form>
     <div class="form-group">
         <label class="control-label" for="CustomerName">Customer Name:</label>
-        <input class="form-control" name="CustomerName" id="CustomerName" 
+        <input class="form-control" name="CustomerName" id="CustomerName"
+               data-val="true" data-val-required="Customer Name is required."
                data-bind="value: CustomerName, event: {change: flagSalesOrderAsEdited}" />
+        <span class="field-validation-valid" data-valmsg-for="CustomerName" data-valmsg-replace="true"></span>
     </div>
     <div class="form-group">
         <label class="control-label" for="PONumber">P.O. Number:</label>
-        <input class="form-control"name="PONumber" id="PONumber" 
+        <input class="form-control" name="PONumber" id="PONumber"
                data-bind="value: PONumber, event: {change: flagSalesOrderAsEdited}" />
     </div>
-</div>
 
-<table class="table table-striped">
-<tr>
-    <th>Product Code</th>
-    <th class="text-right">Quantity</th>
-    <th class="text-right">Unit Price</th>
-    <th class="text-right">Calculated Price</th>
-    <th><button data-bind="click: addSalesOrderItem" class="btn btn-info btn-xs">Add Item</button></th>
-</tr>
-    <tbody data-bind="foreach: SalesOrderItems">
+
+    <table class="table table-striped">
         <tr>
-            <td class="form-group"><input class="form-control input-sm" data-bind="value: ProductCode, event: {change: flagSalesOrderItemAsEdited}, hasfocus: true"/></td>
-            <td class="form-group"><input class="form-control input-sm text-right" data-bind="value: Quantity, event: {change: flagSalesOrderItemAsEdited}"/></td>
-            <td class="form-group"><input class="form-control input-sm text-right" data-bind="value: UnitPrice, event: {change: flagSalesOrderItemAsEdited}"/></td>
-            <td class="form-group"><span class="form-control input-sm text-right" data-bind="text: CalculatedPrice" /></td>
-            <td class="form-group"><button class="btn btn-danger btn-xs" data-bind="click: $parent.deleteSalesOrderItem">Delete</button></td>
+            <th>Product Code</th>
+            <th class="text-right">Quantity</th>
+            <th class="text-right">Unit Price</th>
+            <th class="text-right">Calculated Price</th>
+            <th><button data-bind="click: addSalesOrderItem" class="btn btn-info btn-xs">Add Item</button></th>
         </tr>
-    </tbody>
-    <tr>
-        <td></td>
-        <td></td>
-        <td class="form-group"><span class="form-control text-right">Total price:</span></td>
-        <td class="form-group"><span class="form-control input-sm text-right" data-bind="text: TotalPrice" /></td>
-        <td></td>
-    </tr>
-</table>
+        <tbody data-bind="foreach: SalesOrderItems">
+            <tr>
+                <td class="form-group"><input class="form-control input-sm" data-bind="value: ProductCode, event: {change: flagSalesOrderItemAsEdited}, hasfocus: true" /></td>
+                <td class="form-group"><input class="form-control input-sm text-right" data-bind="value: Quantity, event: {change: flagSalesOrderItemAsEdited}" /></td>
+                <td class="form-group"><input class="form-control input-sm text-right" data-bind="value: UnitPrice, event: {change: flagSalesOrderItemAsEdited}" /></td>
+                <td class="form-group"><span class="form-control input-sm text-right" data-bind="text: CalculatedPrice" /></td>
+                <td class="form-group"><button class="btn btn-danger btn-xs" data-bind="click: $parent.deleteSalesOrderItem">Delete</button></td>
+            </tr>
+        </tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="form-group"><span class="form-control text-right">Total price:</span></td>
+            <td class="form-group"><span class="form-control input-sm text-right" data-bind="text: TotalPrice" /></td>
+            <td></td>
+        </tr>
+    </table>
 
-<p><button data-bind="click: save" class="btn btn-primary">Save</button></p>
+    <p><button  type="submit" class="btn btn-primary">Save</button></p>
 
-<p>
-    <a href="/" class = "btn btn-default btn-sm">&laquo; Back to List</a>
-</p>
+    <p>
+        <a href="/" class="btn btn-default btn-sm">&laquo; Back to List</a>
+    </p>
+</form>
