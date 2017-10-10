@@ -444,10 +444,18 @@ $.extend( $.validator, {
 			return this.valid();
 		},
 
-		checkForm: function() {
+		checkForm: function () {
 			this.prepareForm();
-			for ( var i = 0, elements = ( this.currentElements = this.elements() ); elements[ i ]; i++ ) {
-				this.check( elements[ i ] );
+			for (var i = 0, elements = (this.currentElements = this.elements()) ; elements[i]; i++) {
+
+			    if (this.findByName(elements[i].name).length != undefined && this.findByName(elements[i].name).length > 1) {
+			        for (var count = 0; count < this.findByName(elements[i].name).length; count++) {
+			            this.check(this.findByName(elements[i].name)[count])
+			        }
+			    }
+			    else
+			        this.check(elements[i]);
+
 			}
 			return this.valid();
 		},

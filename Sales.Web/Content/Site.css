@@ -22,3 +22,15 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.tooltip-inner {
+    background-color: #d9534f;
+}
+
+.top.tooltip .tooltip-arrow {
+    border-top-color: #d43f3a;
+}
+
+.right.tooltip .tooltip-arrow {
+    border-right-color: #d43f3a;
+}

@@ -4,9 +4,7 @@
     <div class="form-group">
         <label class="control-label" for="CustomerName">Customer Name:</label>
         <input class="form-control" name="CustomerName" id="CustomerName"
-               data-val="true" data-val-required="Customer Name is required."
                data-bind="value: CustomerName, event: {change: flagSalesOrderAsEdited}" />
-        <span class="field-validation-valid" data-valmsg-for="CustomerName" data-valmsg-replace="true"></span>
     </div>
     <div class="form-group">
         <label class="control-label" for="PONumber">P.O. Number:</label>
@@ -25,9 +23,9 @@
         </tr>
         <tbody data-bind="foreach: SalesOrderItems">
             <tr>
-                <td class="form-group"><input class="form-control input-sm" data-bind="value: ProductCode, event: {change: flagSalesOrderItemAsEdited}, hasfocus: true" /></td>
-                <td class="form-group"><input class="form-control input-sm text-right" data-bind="value: Quantity, event: {change: flagSalesOrderItemAsEdited}" /></td>
-                <td class="form-group"><input class="form-control input-sm text-right" data-bind="value: UnitPrice, event: {change: flagSalesOrderItemAsEdited}" /></td>
+                <td class="form-group"><input name="ProductCode" class="form-control input-sm" data-bind="attr:{'id':'ProductCode_' + $index()}, value: ProductCode, event: {change: flagSalesOrderItemAsEdited}, hasfocus: true" /></td>
+                <td class="form-group"><input name="Quantity" class="form-control input-sm text-right" data-bind="attr:{'id':'Quantity_' + $index()}, value: Quantity, event: {change: flagSalesOrderItemAsEdited}" /></td>
+                <td class="form-group"><input name="UnitPrice" class="form-control input-sm text-right" data-bind="attr:{'id':'UnitPrice_' + $index()}, value: UnitPrice, event: {change: flagSalesOrderItemAsEdited}" /></td>
                 <td class="form-group"><span class="form-control input-sm text-right" data-bind="text: CalculatedPrice" /></td>
                 <td class="form-group"><button class="btn btn-danger btn-xs" data-bind="click: $parent.deleteSalesOrderItem">Delete</button></td>
             </tr>

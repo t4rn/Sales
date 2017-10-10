@@ -93,3 +93,56 @@ SalesOrderViewModel = function (data) {
 
 
 }
+
+$("form").validate({
+    submitHandler: function () {
+        salesOrderViewModel.save();
+    },
+    rules: {
+        CustomerName: {
+            required: true,
+            maxlength: 10
+        },
+        PONumber: {
+            maxlength: 10
+        },
+        ProductCode: {
+            required: true,
+            maxlength: 15,
+            alphaonly: true
+        },
+        Quantity: {
+            required: true,
+            digits: true,
+            range: [1, 1000]
+        },
+        UnitPrice: {
+            required: true,
+            number: true,
+            range: [1, 1000]
+        }
+    },
+    messages: {
+        CustomerName: {
+            required: "You cannot create a sales order unless you specify the customer's name.",
+            maxlength: "To long Customer's name :("
+        },
+        ProductCode: {
+            alphaonly: "Product codes consist of letters only."
+        }
+    },
+    tooltip_options: {
+        CustomerName: {
+            placement: 'right'
+        },
+        PONumber: {
+            placement: 'right'
+        }
+    }
+});
+
+$.validator.addMethod("alphaonly",
+    function (value) {
+        return /^[A-Za-z]+$/.test(value);
+    }
+);
