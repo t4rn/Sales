@@ -55,6 +55,14 @@ SalesOrderViewModel = function (data) {
                 if (data.newLocation != null) {
                     window.location = data.newLocation;
                 }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 400) {
+                    $('#MessageToClient').text(XMLHttpRequest.responseText);
+                }
+                else {
+                    $('#MessageToClient').text('The web server had an error.');
+                }
             }
         });
     },

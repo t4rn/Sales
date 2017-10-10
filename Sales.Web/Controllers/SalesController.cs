@@ -84,9 +84,14 @@ namespace Sales.Web.Controllers
             return View(vm);
         }
 
-        [HttpPost]
+
+        [HandleModelStateException]
         public JsonResult Save(SalesOrderViewModel vm)
         {
+            if (ModelState.IsValid == false)
+            {
+                throw new ModelStateException(ModelState);
+            }
             SalesOrder salesOrder = VmHelpers.CreateSalesOrderFromSalesOrderViewModel(vm);
 
             _salesContext.SalesOrders.Attach(salesOrder);

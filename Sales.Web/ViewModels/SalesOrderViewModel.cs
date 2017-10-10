@@ -1,6 +1,7 @@
 ﻿using System;
 using Sales.Model;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sales.Web.ViewModels
 {
@@ -12,7 +13,13 @@ namespace Sales.Web.ViewModels
             SalesOrderItemsToDelete = new List<int>();
         }
         public int Id { get; set; }
+
+        [CheckScore(3.14)]
+        [Required(ErrorMessage = "Server: You cannot create a sales order unless you specify the customer's name.")]
+        [StringLength(10, ErrorMessage = "Server: To long Customer's name.")]
         public string CustomerName { get; set; }
+
+        [StringLength(10, ErrorMessage = "Server: Max 10 chars.")]
         public string PONumber { get; set; }
 
         public string MessageToClient { get; set; }
