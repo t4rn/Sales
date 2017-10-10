@@ -90,6 +90,30 @@ namespace Sales.Web.Controllers
             SalesOrder salesOrder = VmHelpers.CreateSalesOrderFromSalesOrderViewModel(vm);
 
             _salesContext.SalesOrders.Attach(salesOrder);
+
+            if (salesOrder.ObjectState == ObjectState.Deleted)
+            {
+                foreach (SalesOrderItemViewModel orderItem in vm.SalesOrderItems)
+                {
+                    SalesOrderItem itemToDelete = _salesContext.SalesOrderItems.Find(orderItem.Id);
+                    if (itemToDelete != null)
+                    {
+                        itemToDelete.ObjectState = ObjectState.Deleted;
+                    }
+                }
+            }
+            else
+            {
+                foreach (int itemId in vm.SalesOrderItemsToDelete)
+                {
+                    SalesOrderItem itemToDelete = _salesContext.SalesOrderItems.Find(itemId);
+                    if (itemToDelete != null)
+                    {
+                        itemToDelete.ObjectState = ObjectState.Deleted;
+                    }
+                }
+            }
+
             _salesContext.ApplyStateChanges();// .ChangeTracker.Entries<IObjectWithState>().Single().State = Helpers.ConvertState(salesOrder.ObjectState);
             _salesContext.SaveChanges();
 

@@ -9,6 +9,7 @@ namespace Sales.Web.ViewModels
         public SalesOrderViewModel()
         {
             SalesOrderItems = new List<SalesOrderItemViewModel>();
+            SalesOrderItemsToDelete = new List<int>();
         }
         public int Id { get; set; }
         public string CustomerName { get; set; }
@@ -19,5 +20,7 @@ namespace Sales.Web.ViewModels
         public ObjectState ObjectState { get; set; }
 
         public List<SalesOrderItemViewModel> SalesOrderItems { get; set; }
+
+        public List<int> SalesOrderItemsToDelete { get; set; }
     }
 }

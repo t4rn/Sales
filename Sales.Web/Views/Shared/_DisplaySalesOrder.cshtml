@@ -14,16 +14,25 @@
 <table class="table table-striped">
     <tr>
         <th>Product Code</th>
-        <th>Quantity</th>
-        <th>Unit Price</th>
+        <th class="text-right">Quantity</th>
+        <th class="text-right">Unit Price</th>
+        <th class="text-right">Calculated Price</th>
     </tr>
     <tbody data-bind="foreach: SalesOrderItems">
         <tr>
             <td class="form-group"><span class="form-control input-sm" data-bind="text: ProductCode" /></td>
-            <td class="form-group"><span class="form-control input-sm" data-bind="text: Quantity" /></td>
-            <td class="form-group"><span class="form-control input-sm" data-bind="text: UnitPrice" /></td>
+            <td class="form-group"><span class="form-control input-sm text-right" data-bind="text: Quantity" /></td>
+            <td class="form-group"><span class="form-control input-sm text-right" data-bind="text: UnitPrice" /></td>
+            <td class="form-group"><span class="form-control input-sm text-right" data-bind="text: CalculatedPrice" /></td>
         </tr>
     </tbody>
+    <tr>
+        <td></td>
+        <td></td>
+        <td class="form-group"><span class="form-control text-right">Total price:</span></td>
+        <td class="form-group"><span class="form-control input-sm text-right" data-bind="text: TotalPrice" /></td>
+        <td></td>
+    </tr>
 </table>
 
 <p>

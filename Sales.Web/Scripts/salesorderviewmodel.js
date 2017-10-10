@@ -19,6 +19,20 @@ var salesOrderItemMapping = {
 SalesOrderItemViewModel = function (data) {
     var self = this;
     ko.mapping.fromJS(data, salesOrderItemMapping, self);
+
+    self.flagSalesOrderItemAsEdited = function () {
+
+        if (self.ObjectState() != ObjectState.Added) {
+            self.ObjectState(ObjectState.Modified);
+        }
+
+        return true;
+    };
+
+    self.CalculatedPrice = ko.computed(function () {
+        return (self.Quantity() * self.UnitPrice()).toFixed(2);
+    });
+
 };
 
 
@@ -57,6 +71,24 @@ SalesOrderViewModel = function (data) {
         var salesOrderItem = new SalesOrderItemViewModel(
             { SalesOrderItemId: 0, ProductCode: "", Quantity: 1, UnitPrice: 0, ObjectState: ObjectState.Added });
         self.SalesOrderItems.push(salesOrderItem);
+    };
+
+
+    self.TotalPrice = ko.computed(function () {
+        var total = 0;
+        ko.utils.arrayForEach(self.SalesOrderItems(), function (salesOrderItem) {
+            total += parseFloat(salesOrderItem.CalculatedPrice());
+        });
+
+        return total.toFixed(2);
+    });
+
+    self.deleteSalesOrderItem = function (salesOrderItem) {
+        self.SalesOrderItems.remove(this);
+
+        if (salesOrderItem.Id() > 0 && self.SalesOrderItemsToDelete.indexOf(salesOrderItem.Id()) == -1) {
+            self.SalesOrderItemsToDelete.push(salesOrderItem.Id());
+        };
     }
 
 
