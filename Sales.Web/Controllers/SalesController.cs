@@ -1,6 +1,7 @@
 ﻿using Sales.DataLayer;
 using Sales.Model;
 using Sales.Web.ViewModels;
+using System;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -120,7 +121,15 @@ namespace Sales.Web.Controllers
             }
 
             _salesContext.ApplyStateChanges();// .ChangeTracker.Entries<IObjectWithState>().Single().State = Helpers.ConvertState(salesOrder.ObjectState);
-            _salesContext.SaveChanges();
+
+            try
+            {
+                _salesContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new ModelStateException(ex);
+            }
 
             if (vm.ObjectState == ObjectState.Deleted)
             {

@@ -22,6 +22,18 @@ namespace Sales.Web.ViewModels
             }
         }
 
+        public ModelStateException(Exception ex)
+        {
+            var exception = ex;
+            while (exception.InnerException != null)
+            {
+                exception = exception.InnerException;
+            }
+
+            Errors = new Dictionary<string, string>();
+            Errors.Add(string.Empty, exception.Message);
+        }
+
         public ModelStateException(ModelStateDictionary modelState)
         {
             if (modelState == null)
