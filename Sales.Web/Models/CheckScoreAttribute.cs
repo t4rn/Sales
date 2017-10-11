@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Sales.Web.ViewModels
+namespace Sales.Web.Models
 {
     public class CheckScoreAttribute : ValidationAttribute
     {

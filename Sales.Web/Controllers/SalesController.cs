@@ -1,5 +1,6 @@
 ﻿using Sales.DataLayer;
 using Sales.Model;
+using Sales.Web.Models;
 using Sales.Web.ViewModels;
 using System;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace Sales.Web.Controllers
                 return HttpNotFound();
             }
 
-            SalesOrderViewModel vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
+            SalesOrderViewModel vm = AppHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
             vm.MessageToClient = $"Customer has an Id = '{vm.Id}'.";
 
             return View(vm);
@@ -60,7 +61,7 @@ namespace Sales.Web.Controllers
                 return HttpNotFound();
             }
 
-            SalesOrderViewModel vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
+            SalesOrderViewModel vm = AppHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
             vm.MessageToClient = $"Editing Customer with Name = '{vm.CustomerName}' and Id = '{vm.Id}'";
 
             return View(vm);
@@ -78,7 +79,7 @@ namespace Sales.Web.Controllers
                 return HttpNotFound();
             }
 
-            SalesOrderViewModel vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
+            SalesOrderViewModel vm = AppHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder);
             vm.MessageToClient = $"Deleting Customer with Name = '{vm.CustomerName}' and Id = '{vm.Id}'";
             vm.ObjectState = ObjectState.Deleted;
 
@@ -93,7 +94,7 @@ namespace Sales.Web.Controllers
             {
                 throw new ModelStateException(ModelState);
             }
-            SalesOrder salesOrder = VmHelpers.CreateSalesOrderFromSalesOrderViewModel(vm);
+            SalesOrder salesOrder = AppHelpers.CreateSalesOrderFromSalesOrderViewModel(vm);
 
             _salesContext.SalesOrders.Attach(salesOrder);
 
@@ -136,9 +137,9 @@ namespace Sales.Web.Controllers
                 return Json(new { newLocation = "/Sales/Index/" });
             }
 
-            var messageToClient = VmHelpers.GetMessageToClient(vm.ObjectState, salesOrder.CustomerName, salesOrder.Id);
+            var messageToClient = AppHelpers.GetMessageToClient(vm.ObjectState, salesOrder.CustomerName, salesOrder.Id);
 
-            vm = VmHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder); //.SalesOrderId = salesOrder.SalesOrderId;
+            vm = AppHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder); //.SalesOrderId = salesOrder.SalesOrderId;
             vm.MessageToClient = messageToClient;
 
             return Json(new { salesOrderViewModel = vm });

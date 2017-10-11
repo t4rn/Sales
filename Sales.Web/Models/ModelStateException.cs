@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 
-namespace Sales.Web.ViewModels
+namespace Sales.Web.Models
 {
     public class ModelStateException : Exception
     {

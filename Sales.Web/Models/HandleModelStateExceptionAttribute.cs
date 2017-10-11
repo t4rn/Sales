@@ -2,7 +2,7 @@
 using System.Text;
 using System.Web.Mvc;
 
-namespace Sales.Web.ViewModels
+namespace Sales.Web.Models
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false)]
     public sealed class HandleModelStateExceptionAttribute : FilterAttribute, IExceptionFilter

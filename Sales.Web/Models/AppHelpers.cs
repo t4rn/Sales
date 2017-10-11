@@ -1,8 +1,9 @@
 ﻿using Sales.Model;
+using Sales.Web.ViewModels;
 
-namespace Sales.Web.ViewModels
+namespace Sales.Web.Models
 {
-    public static class VmHelpers
+    public static class AppHelpers
     {
         public static SalesOrderViewModel CreateSalesOrderViewModelFromSalesOrder(SalesOrder salesOrder)
         {

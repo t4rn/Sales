@@ -181,11 +181,11 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\CheckScoreAttribute.cs" />
-    <Compile Include="ViewModels\HandleModelStateExceptionAttribute.cs" />
-    <Compile Include="ViewModels\ModelStateException.cs" />
+    <Compile Include="Models\CheckScoreAttribute.cs" />
+    <Compile Include="Models\HandleModelStateExceptionAttribute.cs" />
+    <Compile Include="Models\ModelStateException.cs" />
     <Compile Include="ViewModels\SalesOrderItemViewModel.cs" />
-    <Compile Include="ViewModels\VmHelpers.cs" />
+    <Compile Include="Models\AppHelpers.cs" />
     <Compile Include="ViewModels\SalesOrderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -251,7 +251,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
