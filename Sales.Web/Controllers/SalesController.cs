@@ -3,6 +3,7 @@ using Sales.Model;
 using Sales.Web.Models;
 using Sales.Web.ViewModels;
 using System;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -123,9 +124,14 @@ namespace Sales.Web.Controllers
 
             _salesContext.ApplyStateChanges();// .ChangeTracker.Entries<IObjectWithState>().Single().State = Helpers.ConvertState(salesOrder.ObjectState);
 
+            string messageToClient = string.Empty;
             try
             {
                 _salesContext.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                messageToClient = "Someone else have modified this sales order since you retrieved it.  Your changes have not been applied.  What you see now are the current values in the database.";
             }
             catch (Exception ex)
             {
@@ -137,7 +143,15 @@ namespace Sales.Web.Controllers
                 return Json(new { newLocation = "/Sales/Index/" });
             }
 
-            var messageToClient = AppHelpers.GetMessageToClient(vm.ObjectState, salesOrder.CustomerName, salesOrder.Id);
+            if (string.IsNullOrWhiteSpace(messageToClient))
+            {
+                messageToClient = AppHelpers.GetMessageToClient(vm.ObjectState, salesOrder.CustomerName, salesOrder.Id);
+            }
+
+            vm.Id = salesOrder.Id;
+            _salesContext.Dispose();
+            _salesContext = new SalesContext();
+            salesOrder = _salesContext.SalesOrders.Find(vm.Id);
 
             vm = AppHelpers.CreateSalesOrderViewModelFromSalesOrder(salesOrder); //.SalesOrderId = salesOrder.SalesOrderId;
             vm.MessageToClient = messageToClient;

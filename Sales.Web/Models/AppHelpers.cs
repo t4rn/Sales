@@ -12,6 +12,7 @@ namespace Sales.Web.Models
             vm.CustomerName = salesOrder.CustomerName;
             vm.PONumber = salesOrder.PONumber;
             vm.ObjectState = ObjectState.Unchanged; // it's always Unchanged
+            vm.RowVersion = salesOrder.RowVersion;
 
             foreach (SalesOrderItem salesOrderItem in salesOrder.SalesOrderItems)
             {
@@ -20,6 +21,7 @@ namespace Sales.Web.Models
                 itemVm.ProductCode = salesOrderItem.ProductCode;
                 itemVm.Quantity = salesOrderItem.Quantity;
                 itemVm.UnitPrice = salesOrderItem.UnitPrice;
+                itemVm.RowVersion = salesOrderItem.RowVersion;
 
                 itemVm.ObjectState = ObjectState.Unchanged;
 
@@ -38,6 +40,7 @@ namespace Sales.Web.Models
             salesOrder.CustomerName = vm.CustomerName;
             salesOrder.PONumber = vm.PONumber;
             salesOrder.ObjectState = vm.ObjectState;
+            salesOrder.RowVersion = vm.RowVersion;
 
             int tempSalesOrderItemId = -1;
             foreach (var orderItem in vm.SalesOrderItems)
@@ -49,6 +52,7 @@ namespace Sales.Web.Models
                     Quantity = orderItem.Quantity,
                     ObjectState = orderItem.ObjectState,
                     UnitPrice = orderItem.UnitPrice,
+                    RowVersion = orderItem.RowVersion
                 };
 
                 if (orderItem.ObjectState != ObjectState.Added)

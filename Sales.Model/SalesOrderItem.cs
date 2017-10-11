@@ -11,5 +11,7 @@
         public SalesOrder SalesOrder { get; set; }
 
         public ObjectState ObjectState { get; set; }
+
+        public byte[] RowVersion { get; set; }
     }
 }

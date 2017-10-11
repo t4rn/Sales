@@ -16,6 +16,7 @@ namespace Sales.DataLayer
             Property(i => i.Quantity).IsRequired();
             Property(i => i.UnitPrice).IsRequired();
             Ignore(i => i.ObjectState);
+            Property(i => i.RowVersion).IsRowVersion();
         }
     }
 }

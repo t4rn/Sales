@@ -16,6 +16,15 @@ var salesOrderItemMapping = {
     }
 };
 
+var byteArrayToStringConverter = function (key, value) {
+    if (key == 'RowVersion' && Array.isArray(value)) {
+        var str = String.fromCharCode.apply(null, value);
+        return btoa(str);
+    }
+
+    return value;
+};
+
 SalesOrderItemViewModel = function (data) {
     var self = this;
     ko.mapping.fromJS(data, salesOrderItemMapping, self);
@@ -45,7 +54,7 @@ SalesOrderViewModel = function (data) {
         $.ajax({
             url: "/Sales/Save/",
             type: "POST",
-            data: ko.toJSON(self),
+            data: ko.toJSON(self, byteArrayToStringConverter, null),
             contentType: "application/json",
             success: function (data) {
                 if (data.salesOrderViewModel != null) {
@@ -99,7 +108,7 @@ SalesOrderViewModel = function (data) {
         };
     }
 
-
+    self.RowVersionStr = self.RowVersion() != null ? "RowVersion: " + byteArrayToStringConverter('RowVersion', self.RowVersion()) : "";
 }
 
 $("form").validate({

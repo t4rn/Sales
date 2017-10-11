@@ -2,6 +2,7 @@
 using Sales.Model;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Sales.Web.Models;
 
 namespace Sales.Web.ViewModels
 {
@@ -29,5 +30,7 @@ namespace Sales.Web.ViewModels
         public List<SalesOrderItemViewModel> SalesOrderItems { get; set; }
 
         public List<int> SalesOrderItemsToDelete { get; set; }
+
+        public byte[] RowVersion { get; set; }
     }
 }
